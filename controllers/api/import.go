@@ -7,8 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"net/url"
-	"os"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -117,27 +115,13 @@ func (as *Server) ImportSite(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	restrictedDialer := dialer.Dialer()
-	var tr *http.Transport
-	if os.Getenv("HTTP_PROXY") != "" {
-		proxyURL, err := url.Parse(os.Getenv("HTTP_PROXY"))
-		if err == nil {
-			tr = &http.Transport{
-				DialContext: restrictedDialer.DialContext,
-				TLSClientConfig: &tls.Config{
-					InsecureSkipVerify: true,
-				},
-				Proxy: http.ProxyURL(proxyURL),
-			}
-		} else {
-			tr = &http.Transport{
-				DialContext: restrictedDialer.DialContext,
-				TLSClientConfig: &tls.Config{
-					InsecureSkipVerify: true,
-				},
-			}
-		}
+	tr := &http.Transport{
+		DialContext: restrictedDialer.DialContext,
+		Proxy:       http.ProxyFromEnvironment,
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
 	}
-
 	client := &http.Client{Transport: tr}
 	resp, err := client.Get(cr.URL)
 	if err != nil {
