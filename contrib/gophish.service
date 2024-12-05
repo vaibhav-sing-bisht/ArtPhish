@@ -1,0 +1,13 @@
+# Copy the file on /etc/systemd/system
+# and run systemctl daemon-reload
+
+[Unit]
+Description=gophish-service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/gophish/
+ExecStart=/opt/gophish/gophish
+
+[Install]
+WantedBy=multi-user.target
