@@ -1,0 +1,103 @@
+{{define "body"}}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="row">
+        <h1 class="page-header">Providers</h1>
+    </div>
+    <div id="flashes" class="row"></div>
+    {{template "flashes" .Flashes}}
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active" role="ldap"><a href="#ldap" aria-controls="ldap" role="tab" data-toggle="tab">LDAP</a></li>
+    </ul>
+    <!-- Tab Panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="ldap">
+            <br />
+            <div class="row">
+                <button type="button" class="btn btn-primary" onclick="editLdap(-1)" data-toggle="modal" data-backdrop="static"
+                        data-target="#ldap_modal"><i class="fa fa-plus"></i> New Server</button>
+            </div>
+            &nbsp;
+            <div id="ldap_loading">
+                <i class="fa fa-spinner fa-spin fa-4x"></i>
+            </div>
+            <div id="ldap_emptyMessage" class="row" style="display:none;">
+                <div class="alert alert-info">
+                    No server created yet. Let's create one!
+                </div>
+            </div>
+            <div class="row">
+                <table id="ldapTable" class="table" style="display:none;">
+                    <thead>
+                    <tr>
+                        <th class="col-md-4">Name</th>
+                        <th>Host</th>
+                        <th>Last Modified Date</th>
+                        <th class="col-md-2 no-sort"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ldap_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- New Template Modal -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="dismiss()"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ldapModalLabel">New LDAP Config</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="modal.flashes"></div>
+                <form>
+                    <div class="form-group">
+                        <label class="control-label" for="ldap_name">Name:</label>
+                        <input type="text" class="form-control" placeholder="Server name" id="ldap_name" autofocus />
+                        <label class="control-label" for="ldap_protocol">Protocol:</label>
+                        <select class="form-control" placeholder="Protocol" id="ldap_protocol">
+                            <option value="ldap">ldap</option>
+                            <option value="ldaps">ldaps</option>
+                        </select>
+                        <label class="control-label" for="ldap_host">Host:</label>
+                        <input type="text" class="form-control" placeholder="ldap.example.com:389" id="ldap_host" required />
+                        <label class="control-label" for="ldap_username">Username:</label>
+                        <input type="text" class="form-control" placeholder="Username" id="ldap_username" />
+                        <label class="control-label" for="ldap_password">Password:</label>
+                        <input type="password" class="form-control" placeholder="Password" id="ldap_password" />
+                        <label class="control-label" for="ldap_base_dn">Base DN:
+                        <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="The base dn where targets are located"></i></label>
+                        <input type="text" class="form-control" placeholder="ou=people,dc=example,dc=com" id="ldap_base_dn" required />
+                        <label class="control-label" for="ldap_query">Query:
+                        <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="The query to run for obtaining targets. No Query validation implemented, so please be careful"></i></label>
+                        <input type="text" class="form-control" placeholder="(objectClass=inetOrgPerson)" id="ldap_query" required />
+                        <label class="control-label" for="ldap_attributes">Attributes:
+                        <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="Comma separated string of attributes in this order: `firstName,lastName,email,jobFunction`. The job function is optional"></i></label>
+                        <input type="text" class="form-control" placeholder="firstName,lastName,email,jobFunction" id="ldap_attributes" required />
+                        <div class="checkbox checkbox-primary">
+                            <input id="ldap_ignore_cert_errors" type="checkbox" checked>
+                            <label for="ldap_ignore_cert_errors">Ignore Certificate Errors <i class="fa fa-question-circle"
+                                                                                         data-toggle="tooltip" data-placement="right" title="Ignore common certificate errors such as self-signed certs (exposes you to MiTM attacks - use carefully!)"></i></label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default" onclick="dismissLdap()">Cancel</button>
+                <button type="button" class="btn btn-primary" id="ldap_modalSubmit">Save LDAP Config</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{end}} {{define "scripts"}}
+<!--script src="/js/dist/app/sending_profiles.min.js"></script-->
+<script src="/js/dist/app/providers.min.js"></script>
+<script src="/js/dist/app/providers_ldap.min.js"></script>
+{{end}}

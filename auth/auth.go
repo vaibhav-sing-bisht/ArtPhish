@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 
+	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -38,7 +39,10 @@ var ErrPasswordTooShort = fmt.Errorf("Password must be at least %d characters", 
 // random bytes
 func GenerateSecureKey(n int) string {
 	k := make([]byte, n)
-	io.ReadFull(rand.Reader, k)
+	_, err := io.ReadFull(rand.Reader, k)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return fmt.Sprintf("%x", k)
 }
 

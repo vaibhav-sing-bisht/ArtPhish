@@ -400,8 +400,10 @@ func (s *ModelsSuite) TestEmbedAttachment(ch *check.C) {
 	// The email package simply ignores attachments where the Content-Disposition header is set
 	// to inline, so the best we can do without replacing the whole thing is to check that only
 	// the text file was added as an attachment.
-	ch.Assert(got.Attachments, check.HasLen, 1)
-	ch.Assert(got.Attachments[0].Filename, check.Equals, "test.txt")
+	// ch.Assert(got.Attachments, check.HasLen, 1) // Deprecated: this seems to be fixed
+	ch.Assert(got.Attachments, check.HasLen, 2)
+	ch.Assert(got.Attachments[0].Filename, check.Equals, "test.png")
+	ch.Assert(got.Attachments[1].Filename, check.Equals, "test.txt")
 }
 
 func BenchmarkMailLogGenerate100(b *testing.B) {

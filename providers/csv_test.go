@@ -1,14 +1,13 @@
-package util
+package providers
 
 import (
 	"bytes"
 	"fmt"
+	"github.com/gophish/gophish/models"
 	"mime/multipart"
 	"net/http"
 	"reflect"
 	"testing"
-
-	"github.com/gophish/gophish/models"
 )
 
 func buildCSVRequest(csvPayload string) (*http.Request, error) {

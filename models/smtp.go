@@ -62,12 +62,12 @@ var ErrFromAddressNotSpecified = errors.New("No From Address specified")
 // profiles containes a value that is not an email address
 var ErrInvalidFromAddress = errors.New("Invalid SMTP From address because it is not an email address")
 
-// ErrHostNotSpecified is thrown when there is no Host specified
+// ErrSmtpHostNotSpecified is thrown when there is no Host specified
 // in the SMTP configuration
-var ErrHostNotSpecified = errors.New("No SMTP Host specified")
+var ErrSmtpHostNotSpecified = errors.New("No SMTP Host specified")
 
-// ErrInvalidHost indicates that the SMTP server string is invalid
-var ErrInvalidHost = errors.New("Invalid SMTP server address")
+// ErrInvalidSmtpHost indicates that the SMTP server string is invalid
+var ErrInvalidSmtpHost = errors.New("Invalid SMTP server address")
 
 // TableName specifies the database tablename for Gorm to use
 func (s SMTP) TableName() string {
@@ -80,7 +80,7 @@ func (s *SMTP) Validate() error {
 	case s.FromAddress == "":
 		return ErrFromAddressNotSpecified
 	case s.Host == "":
-		return ErrHostNotSpecified
+		return ErrSmtpHostNotSpecified
 	case !validateFromAddress(s.FromAddress):
 		return ErrInvalidFromAddress
 	}
@@ -91,13 +91,13 @@ func (s *SMTP) Validate() error {
 	// Make sure addr is in host:port format
 	hp := strings.Split(s.Host, ":")
 	if len(hp) > 2 {
-		return ErrInvalidHost
+		return ErrInvalidSmtpHost
 	} else if len(hp) < 2 {
 		hp = append(hp, "25")
 	}
 	_, err = strconv.Atoi(hp[1])
 	if err != nil {
-		return ErrInvalidHost
+		return ErrInvalidSmtpHost
 	}
 	return err
 }

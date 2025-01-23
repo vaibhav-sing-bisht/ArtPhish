@@ -13,7 +13,7 @@ import (
 	"github.com/gophish/gophish/dialer"
 	log "github.com/gophish/gophish/logger"
 	"github.com/gophish/gophish/models"
-	"github.com/gophish/gophish/util"
+	"github.com/gophish/gophish/providers"
 	"github.com/jordan-wright/email"
 )
 
@@ -39,11 +39,21 @@ type emailResponse struct {
 	Subject string `json:"subject"`
 }
 
-// ImportGroup imports a CSV of group members
-func (as *Server) ImportGroup(w http.ResponseWriter, r *http.Request) {
-	ts, err := util.ParseCSV(r)
+// ImportCsvGroup imports a CSV of group members
+func (as *Server) ImportCsvGroup(w http.ResponseWriter, r *http.Request) {
+	ts, err := providers.ParseCSV(r)
 	if err != nil {
 		JSONResponse(w, models.Response{Success: false, Message: "Error parsing CSV"}, http.StatusInternalServerError)
+		return
+	}
+	JSONResponse(w, ts, http.StatusOK)
+}
+
+// ImportLdapGroup imports group members from LDAP Server
+func (as *Server) ImportLdapGroup(w http.ResponseWriter, r *http.Request) {
+	ts, err := providers.ImportLDAPUsers(r)
+	if err != nil {
+		JSONResponse(w, models.Response{Success: false, Message: err.Error()}, http.StatusInternalServerError)
 		return
 	}
 	JSONResponse(w, ts, http.StatusOK)
