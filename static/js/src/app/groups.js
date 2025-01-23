@@ -89,7 +89,7 @@ function edit(id) {
     }
     // Handle file uploads
     $("#csvupload").fileupload({
-        url: "/api/import/group",
+        url: "/api/import/group/csv",
         dataType: "json",
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', 'Bearer ' + user.api_key);

@@ -8,7 +8,7 @@
     <div id="flashes" class="row"></div>
     <div class="row">
         <button type="button" class="btn btn-primary" onclick="edit(-1)" data-toggle="modal" data-backdrop="static"
-            data-target="#modal">
+                data-target="#modal">
             <i class="fa fa-plus"></i> New Group</button>
     </div>
     &nbsp;
@@ -49,17 +49,43 @@
                 <div class="row" id="modal.flashes"></div>
                 <label class="control-label" for="name">Name:</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" ng-model="group.name" placeholder="Group name" id="name"
+                    <input type="text" class="form-control" placeholder="Group name" id="name"
                         autofocus />
                 </div>
                 <div class="form-group">
-                    <span class="btn btn-danger btn-file" data-toggle="tooltip" data-placement="right"
-                        title="Supports CSV files" id="fileUpload">
-                        <i class="fa fa-plus"></i> Bulk Import Users
-                        <input type="file" id="csvupload" multiple>
-                    </span>
-                    <span id="csv-template" class="text-muted small">
-                        <i class="fa fa-file-excel-o"></i> Download CSV Template</span>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <span class="btn btn-danger btn-file" data-toggle="tooltip" data-placement="right"
+                                  title="Supports CSV files" id="fileUpload">
+                                <i class="fa fa-plus"></i> Import CSV Users
+                                <input type="file" id="csvupload" multiple>
+                            </span>
+                            <span id="csv-template" class="text-muted small">
+                            <i class="fa fa-file-excel-o"></i> Download CSV Template</span>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="btn btn-danger" data-toggle="tooltip" data-placement="right"
+                                  title="Import from LDAP Server. Click to toggle" id="ldap_btn">
+                                <i class="fa fa-cloud-upload"></i> From LDAP
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" id="ldap_form" style="display: none">
+                    <hr>
+                    <div id="ldap_select_group">
+                        <div class="form-group">
+                            <label for="ldap_servers">Choose LDAP Server</label>
+                            <select class="form-control" placeholder="Choose Server" id="ldap_servers">
+                                <option value="">Placeholder - ldap://ldap.example.com:389</option>
+                            </select>
+                        </div>
+                        <span class="btn btn-danger" id="ldap_import_btn" data-loading-text="Importing...">Import</span>
+                    </div>
+                    <div id="no_ldap" style="display: none">
+                        No LDAP config found. Please add one <a href="/providers">here</a>.
+                    </div>
+                    <hr>
                 </div>
                 <div class="row">
                     <form id="targetForm">
@@ -103,4 +129,5 @@
 </div>
 {{end}} {{define "scripts"}}
 <script src="/js/dist/app/groups.min.js"></script>
+<script src="/js/dist/app/groups_ldap.min.js"></script>
 {{end}}

@@ -217,6 +217,38 @@ var api = {
             return query("/smtp/" + id, "DELETE", {}, false)
         }
     },
+    // LDAP contains the endpoints for /providers/ldap
+    LDAP: {
+        // get() - Queries the API for GET /providers/ldap
+        get: function () {
+            return query("/providers/ldap/", "GET", {}, false)
+        },
+        // post() - Posts a LDAP to POST /providers/ldap
+        post: function (ldap) {
+            return query("/providers/ldap/", "POST", ldap, false)
+        }
+    },
+    // LDAPId contains the endpoints for /providers/ldap/:id
+    LDAPId: {
+        // get() - Queries the API for GET /providers/ldap/:id
+        get: function (id) {
+            return query("/providers/ldap/" + id, "GET", {}, false)
+        },
+        // put() - Puts a LDAP to PUT /providers/ldap/:id
+        put: function (ldap) {
+            return query("/providers/ldap/" + ldap.id, "PUT", ldap, false)
+        },
+        // delete() - Deletes a LDAP at DELETE /providers/ldap/:id
+        delete: function (id) {
+            return query("/providers/ldap/" + id, "DELETE", {}, false)
+        }
+    },
+    // import contains some endpoints for /import/group
+    import: {
+        ldap: function(id) {
+            return query("/import/group/ldap/" + id, "GET", {}, false)
+        }
+    },
     // IMAP containts the endpoints for /imap/
     IMAP: {
         get: function() {

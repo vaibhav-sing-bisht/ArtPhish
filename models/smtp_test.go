@@ -29,7 +29,7 @@ func (s *ModelsSuite) TestPostSMTPNoHost(c *check.C) {
 		UserId:      1,
 	}
 	err := PostSMTP(&smtp)
-	c.Assert(err, check.Equals, ErrHostNotSpecified)
+	c.Assert(err, check.Equals, ErrSmtpHostNotSpecified)
 }
 
 func (s *ModelsSuite) TestPostSMTPNoFrom(c *check.C) {
