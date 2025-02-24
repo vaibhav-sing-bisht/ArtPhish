@@ -14,7 +14,7 @@ FROM golang:1.15.2 AS build-golang
 
 WORKDIR /go/src/github.com/gophish/gophish
 COPY . .
-RUN go get -v && go build -v
+RUN go get -v && CGO_CFLAGS="-D_LARGEFILE64_SOURCE" go build -v
 
 
 # Runtime container
