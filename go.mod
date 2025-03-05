@@ -19,11 +19,11 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/jordan-wright/unindexed v0.0.0-20181209214434-78fa79113c0f
-	github.com/mattn/go-sqlite3 v2.0.1+incompatible //changed to v1.14.16 as v2.0.3+incompatable was retracted
+	github.com/mattn/go-sqlite3 v1.14.24 //changed to v1.14.24 as v2.0.3+incompatable was retracted
 	github.com/oschwald/maxminddb-golang v1.13.1
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/crypto v0.35.0 // CVE-2024-45337 fix
-	golang.org/x/time v0.10.0
+	golang.org/x/time v0.11.0
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c
 )
 
@@ -47,12 +47,10 @@ require (
 	github.com/stretchr/testify v1.10.0 // indirect
 	github.com/xhit/go-str2duration/v2 v2.1.0 // indirect
 	github.com/ziutek/mymysql v1.5.4 // indirect
-	golang.org/x/net v0.35.0 // indirect
-	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/net v0.36.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 )
 
 replace gopkg.in/alecthomas/kingpin.v2 => github.com/alecthomas/kingpin/v2 v2.4.0
-
-replace github.com/mattn/go-sqlite3 v2.0.1+incompatible => github.com/mattn/go-sqlite3 v1.14.16
