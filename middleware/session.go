@@ -16,7 +16,6 @@ func init() {
 	Store.Options.HttpOnly = true
 	Store.Options.SameSite = http.SameSiteLaxMode // Explicitly set SameSite=Lax (this permits login when adminConfig.UseTLS = false)
 	// This sets the maxAge to 5 days for all cookies
-	// This sets the maxAge to 5 days for all cookies
 	Store.MaxAge(86400 * 5)
 
 }
