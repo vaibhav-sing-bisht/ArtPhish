@@ -86,6 +86,18 @@ func reportedEmail(t *testing.T, ctx *testContext, rid string) {
 	}
 }
 
+func reportedEmailWithTimestamp(t *testing.T, ctx *testContext, rid string) {
+	resp, err := http.Get(fmt.Sprintf("%s/report?%s=%s&%s=%s", ctx.phishServer.URL, models.RecipientParameter, rid, models.ReportedTimestampParameter, "2023-10-01T00:00:00Z"))
+	if err != nil {
+		t.Fatalf("error requesting /report endpoint: %v", err)
+	}
+	got := resp.StatusCode
+	expected := http.StatusNoContent
+	if got != expected {
+		t.Fatalf("invalid status code received for /report endpoint. expected %d got %d", expected, got)
+	}
+}
+
 func reportEmail404(t *testing.T, ctx *testContext, rid string) {
 	resp, err := http.Get(fmt.Sprintf("%s/report?%s=%s", ctx.phishServer.URL, models.RecipientParameter, rid))
 	if err != nil {
@@ -187,6 +199,32 @@ func TestReportedPhishingEmail(t *testing.T) {
 	}
 
 	reportedEmail(t, ctx, result.RId)
+
+	campaign = getFirstCampaign(t)
+	result = campaign.Results[0]
+	lastEvent := campaign.Events[len(campaign.Events)-1]
+
+	if result.Reported != true {
+		t.Fatalf("unexpected result report status received. expected %v got %v", true, result.Reported)
+	}
+	if lastEvent.Message != models.EventReported {
+		t.Fatalf("unexpected event status received. expected %s got %s", lastEvent.Message, models.EventReported)
+	}
+	if result.ModifiedDate != lastEvent.Time {
+		t.Fatalf("unexpected result modified date received. expected %s got %s", lastEvent.Time, result.ModifiedDate)
+	}
+}
+
+func TestReportedPhishingEmailWithTimestamp(t *testing.T) {
+	ctx := setupTest(t)
+	defer tearDown(t, ctx)
+	campaign := getFirstCampaign(t)
+	result := campaign.Results[0]
+	if result.Status != models.StatusSending {
+		t.Fatalf("unexpected result status received. expected %s got %s", models.StatusSending, result.Status)
+	}
+
+	reportedEmailWithTimestamp(t, ctx, result.RId)
 
 	campaign = getFirstCampaign(t)
 	result = campaign.Results[0]

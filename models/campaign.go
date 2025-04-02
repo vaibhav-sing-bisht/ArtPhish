@@ -1,7 +1,9 @@
 package models
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
 	"net/url"
 	"time"
 
@@ -129,6 +131,8 @@ var ErrInvalidSendByDate = errors.New("The launch date must be before the \"send
 // RecipientParameter is the URL parameter that points to the result ID for a recipient.
 const RecipientParameter = "rid"
 
+const ReportedTimestampParameter = "reported_timestamp"
+
 // Validate checks to make sure there are no invalid fields in a submitted campaign
 func (c *Campaign) Validate() error {
 	switch {
@@ -154,10 +158,54 @@ func (c *Campaign) UpdateStatus(s string) error {
 	return db.Table("campaigns").Where("id=?", c.Id).Update("status", s).Error
 }
 
+func decodeEventDetails(details string) (EventDetails, error) {
+	var eventDetails EventDetails
+	if details == "" {
+		return eventDetails, nil
+	}
+	err := json.Unmarshal([]byte(details), &eventDetails)
+	if err != nil {
+		return eventDetails, fmt.Errorf("error decoding event details: %v", err)
+	}
+	return eventDetails, nil
+}
+
+func parseAndSetEventTime(details EventDetails, event *Event) error {
+	if details.Payload == nil {
+		return nil
+	}
+	timestampString := details.Payload.Get(ReportedTimestampParameter)
+	if timestampString == "" {
+		return nil
+	}
+	parsedTime, err := time.Parse(time.RFC3339, timestampString)
+	if err != nil {
+		return fmt.Errorf("error parsing timestamp: %v", err)
+	}
+	event.Time = parsedTime.UTC()
+	return nil
+}
+
 // AddEvent creates a new campaign event in the database
 func AddEvent(e *Event, campaignID int64) error {
 	e.CampaignId = campaignID
+
+	var err error
+	var details EventDetails
+
+	details, err = decodeEventDetails(e.Details)
+	if err != nil {
+		log.Errorf(err.Error())
+		return err
+	}
+
 	e.Time = time.Now().UTC()
+
+	err = parseAndSetEventTime(details, e)
+	if err != nil {
+		log.Errorf(err.Error())
+		return err
+	}
 
 	whs, err := GetActiveWebhooks()
 	if err == nil {
