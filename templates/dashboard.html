@@ -1,70 +1,80 @@
-{{define "body"}}
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h1 class="page-header">
-        Dashboard
-    </h1>
-    <div id="loading">
-        <i class="fa fa-spinner fa-spin fa-4x"></i>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Art PHish Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      margin: 0;
+      background-color: #87CEEB;
+      color: #333;
+    }
+    header {
+      background-color: #FFA500;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    header img {
+      height: 40px;
+    }
+    .container {
+      padding: 2rem;
+    }
+    .card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      margin-bottom: 1.5rem;
+    }
+    .card h3 {
+      color: #FFA500;
+    }
+    .btn {
+      background-color: #FFA500;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn:hover {
+      background-color: #e69500;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="logo.png" alt="Art PHish Logo">
+      <h1 style="margin-left: 1rem; font-size: 1.5rem;">Art PHish</h1>
     </div>
-    {{template "flashes" .Flashes}}
-    <div id="emptyMessage" style="display:none;">
-        <div class="alert alert-info">
-            No campaigns created yet. Let's create one!
-        </div>
+    <button class="btn">Logout</button>
+  </header>
+  <div class="container">
+    <div class="card">
+      <h3>Create a New Campaign</h3>
+      <p>Launch phishing simulations with ease using our intuitive builder.</p>
+      <button class="btn">New Campaign</button>
     </div>
-    <div id="dashboard" style="display:none;">
-        <div class="row">
-            <div id="overview_chart" style="height:200px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
-        </div>
-        <div class="row">
-            <div style="height:200px;" class="col-lg-1 col-md-1"></div>
-            <div id="sent_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-            <div id="opened_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-            <div id="clicked_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-            <div id="submitted_data_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-            <div id="email_reported_chart" style="height:200px;" class="col-lg-2 col-md-2"></div>
-            <div style="height:200px;" class="col-lg-1 col-md-1"></div>
-        </div>
-        <div class="row">
-            <h2>Recent Campaigns</h2>
-        </div>
-        <div class="row">
-            <a href="/campaigns">
-                <button type="button" class="btn btn-primary">View All</button>
-            </a>
-        </div>
-        &nbsp;&nbsp;
-        <div class="row">
-            <table id="campaignTable" class="table">
-                <thead>
-                    <tr>
-                        <th class="col-md-2 col-sm-2">Name</th>
-                        <th class="col-md-2 col-sm-2">Created Date</th>
-                        <th class="col-md-1 col-sm-1">
-                            <i class="fa fa-envelope-o"></i>
-                        </th>
-                        <th class="col-md-1 col-sm-1">
-                            <i class="fa fa-envelope-open-o"></i>
-                        </th>
-                        <th class="col-md-1 col-sm-1">
-                            <i class="fa fa-mouse-pointer"></i>
-                        </th>
-                        <th class="col-md-1 col-sm-1">
-                            <i class="fa fa-exclamation-circle"></i>
-                        </th>
-                        <th class="col-md-1 col-sm-1">
-                            <i class="fa fa-bullhorn"></i>
-                        </th>
-                        <th class="col-md-1 col-sm-1">Status</th>
-                        <th class="col-md-2 col-sm-2 no-sort"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+    <div class="card">
+      <h3>Campaign Reports</h3>
+      <p>View who clicked, opened, or submitted information on your campaigns.</p>
+      <button class="btn">View Reports</button>
     </div>
-</div>
-{{end}} {{define "scripts"}}
-<script src="/js/dist/app/dashboard.min.js"></script>
-{{end}}
+    <div class="card">
+      <h3>Templates</h3>
+      <p>Manage and create phishing email templates for your campaigns.</p>
+      <button class="btn">Manage Templates</button>
+    </div>
+  </div>
+</body>
+</html>
