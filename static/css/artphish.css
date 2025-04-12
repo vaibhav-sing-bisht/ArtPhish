@@ -1,0 +1,18 @@
+body {
+  background-color: #87CEEB;
+  font-family: 'Nunito', sans-serif;
+}
+.navbar {
+  background-color: #FFA500;
+}
+.btn-primary {
+  background-color: #FFA500;
+  border-color: #FFA500;
+  color: white;
+}
+.card h3 {
+  color: #FFA500;
+}
+.btn-primary:hover {
+  background-color: #e69500;
+}
